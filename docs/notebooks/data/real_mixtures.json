@@ -1,0 +1,51 @@
+{
+  "pressure_Pa": 101325.0,
+  "components": {
+    "benzene": {
+      "smiles": "c1ccccc1",
+      "molar_mass_g_mol": 78.1118,
+      "cosmo_directory": "C6H6_001_benzene",
+      "melting_temperature_K": 278.69,
+      "enthalpy_of_fusion_J_mol": 9866.3,
+      "fusion_reference": "Oliver, Eaton and Huffman (1948), selected row in NIST Chemistry WebBook",
+      "source_url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C71432&Mask=4"
+    },
+    "water": {
+      "smiles": "O",
+      "molar_mass_g_mol": 18.01528,
+      "cosmo_directory": "H2O",
+      "melting_temperature_K": 273.152519,
+      "melting_reference": "IAPWS ice Ih release, normal-pressure melting temperature",
+      "source_url": "https://iapws.org/public/documents/S1atB/Ice-Rev2009.pdf",
+      "antoine_bar": {
+        "A": 5.40221,
+        "B": 1838.675,
+        "C": -31.737,
+        "T_min_K": 273.0,
+        "T_max_K": 303.0,
+        "reference": "Bridgeman and Aldrich (1964), coefficients tabulated by NIST",
+        "source_url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&Type=ANTOINE"
+      }
+    },
+    "ethanol": {
+      "smiles": "CCO",
+      "molar_mass_g_mol": 46.06844,
+      "cosmo_directory": "C2H6O_001_ethanol",
+      "melting_temperature_K": 159.0,
+      "melting_reference": "Haida, Suga et al. (1977), crystalline I to liquid, NIST",
+      "source_url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C64175&Mask=4",
+      "antoine_bar": {
+        "A": 5.37229,
+        "B": 1670.409,
+        "C": -40.191,
+        "T_min_K": 273.0,
+        "T_max_K": 351.7,
+        "reference": "Kretschmer and Wiebe (1949), coefficients tabulated by NIST",
+        "source_url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C64175&Type=ANTOINE"
+      }
+    }
+  },
+  "solid_model": "Only pure benzene(s), constant fusion enthalpy and delta_Cp=0. All SLLE tutorial temperatures are above the melting points of water and ethanol. Solid solutions, hydrates and other solids are not supplied.",
+  "saft_parameters": "Bundled Haslam et al. (2020) database, unchanged. All unlike dispersion pairs present. Published absence of aCH-CH2OH association is kept (no invented hydrogen-bond interaction).",
+  "cosmo_parameters": "Compiled openCOSMO-RS default_turbomole unless THERMOWEAVE_COSMO_PARAMETERS explicitly overrides it. Turbomole COSMO_TZVPD_FINE conformers are external user-provided inputs."
+}

@@ -1,0 +1,105 @@
+site_name: ThermoWeave
+site_description: Thermodynamic models and phase-equilibrium calculations in Python
+site_url: https://tum-btx.github.io/thermoweave-docs/
+repo_url: https://github.com/TUM-BTX/thermoweave-docs
+repo_name: TUM-BTX/thermoweave-docs
+edit_uri: ''
+docs_dir: docs
+site_dir: site
+copyright: ThermoWeave contributors · MIT license
+
+theme:
+  name: material
+  font: false
+  icon:
+    logo: material/atom
+  palette:
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+  - mkdocs-jupyter:
+      include: ["*.ipynb"]
+      execute: false
+      include_source: true
+      markdown_cell_processor: mkdocs
+      ignore_h1_titles: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - assets/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
+
+exclude_docs: |
+  README.md
+
+nav:
+  - Overview: index.md
+  - Getting started:
+      - Installation: installation.md
+      - Linux: installation/linux.md
+      - Windows: installation/windows.md
+      - macOS: installation/macos.md
+      - Verify and troubleshoot: installation/troubleshooting.md
+  - Models:
+      - SAFT-γ Mie: models/saft-gamma-mie.md
+      - openCOSMO-RS: models/opencosmors.md
+      - HANNA: models/hanna.md
+  - Calculations and theory:
+      - API and units: api.md
+      - Thermodynamic background: theory.md
+      - Capabilities and assumptions: capabilities.md
+  - Tutorials:
+      - Choose a calculation: tutorials.md
+      - 00 · Quickstart and units: notebooks/00_quickstart_and_units.ipynb
+      - 01 · Activities and excess Gibbs energy: notebooks/01_excess_gibbs_models.ipynb
+      - 02 · Molecules and group assignment: notebooks/02_saft_molecules_and_groups.ipynb
+      - 03 · EOS properties: notebooks/03_saft_eos_properties.ipynb
+      - 04 · Derivatives and responses: notebooks/04_derivatives_and_response_functions.ipynb
+      - 05 · Vapour–liquid equilibrium: notebooks/05_vapour_liquid_equilibrium.ipynb
+      - 06 · Liquid stability and flash: notebooks/06_liquid_stability_and_flash.ipynb
+      - 07 · Solubility and solid–liquid flash: notebooks/07_solubility_and_solid_liquid_flash.ipynb
+      - 08 · Parameter fitting: notebooks/08_parameter_fitting_and_evaluation.ipynb
+      - 09 · COSMO-RS and HANNA: notebooks/09_cosmors_and_hanna.ipynb
+      - 10 · Binary SLLE with SAFT: notebooks/10_binary_slle_saft.ipynb
+      - 11 · Ternary SLLE with SAFT: notebooks/11_ternary_slle_saft.ipynb
+      - 12 · Binary and ternary SLLE with COSMO-RS: notebooks/12_binary_ternary_slle_cosmors.ipynb
+      - Optional analytic theory:
+          - Custom activity model: notebooks/theory/custom_activity_models.ipynb
+          - Reactive and electrolyte illustration: notebooks/theory/synthetic_reactive_electrolytes.ipynb
+  - Advanced workflows:
+      - Corpus evaluation and component databases: advanced/production-evaluation.md
+      - COSMO-RS parameter fitting: advanced/parametrization.md
+  - Scientific references: references.md
+  - Third-party notices: third-party-notices.md
+  - Maintaining the documentation: contributing-docs.md
