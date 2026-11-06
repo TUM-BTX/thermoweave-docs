@@ -1,7 +1,7 @@
 # Third-party notices and parameter provenance
 
 ThermoWeave includes SAFT parameter tables converted from SGTPy, extension values
-from the Clapeyron.jl database, and a NumPy port of SGTPy collocation routines
+from the Clapeyron.jl database, a pinned NRTL parameter CSV, and a NumPy port of SGTPy collocation routines
 used only by comparison tests. Their upstream MIT notices are reproduced below.
 SAFT kernels implement the cited thermodynamic equations in JAX; SGTPy is an
 optional comparison oracle, not a runtime dependency. Each parameter row keeps
@@ -42,6 +42,13 @@ SOFTWARE.
 ```
 
 ## ClapeyronThermo/Clapeyron.jl
+
+Bundled NRTL data:
+[database/Activity/NRTL/NRTL_unlike.csv](https://github.com/ClapeyronThermo/Clapeyron.jl/blob/cb620c1af72b7bcea8407e4f970dbae64a7f8c9d/database/Activity/NRTL/NRTL_unlike.csv),
+commit `cb620c1af72b7bcea8407e4f970dbae64a7f8c9d`, retrieved 2026-11-06.
+The CSV retains its scientific source columns. ThermoWeave's native JAX NRTL
+implementation follows the same directed a+b/T convention; Julia is not a
+runtime dependency. See [NRTL](docs/models/nrtl.md).
 
 Source: https://github.com/ClapeyronThermo/Clapeyron.jl/blob/master/LICENSE.md
 

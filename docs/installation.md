@@ -1,7 +1,7 @@
 # Install ThermoWeave
 
 This guide starts from a new computer. The recommended installation creates a
-named Conda environment called `thermoweave`, with Python 3.12, the SAFT model,
+named Conda environment called `thermoweave`, with Python 3.12, the SAFT and NRTL models,
 automatic SMILES assignment, JupyterLab and development tools. No GPU is needed.
 
 ## 1. Install the prerequisites
@@ -28,11 +28,11 @@ PowerShell or another editor terminal.
 
 ## Choose your platform
 
-| Platform | ThermoWeave + CPU SAFT | Optional C++ openCOSMO-RS |
+| Platform | ThermoWeave + CPU SAFT/NRTL | Optional C++ openCOSMO-RS |
 |---|---|---|
 | Linux x86_64 | This is the locally validated and CI-tested platform. | Supported build route; see the [Linux guide](installation/linux.md). |
 | Windows x86_64 | Follow the [Windows guide](installation/windows.md); this project has not run Windows CI. | The documented route uses Linux through WSL2. |
-| macOS Apple Silicon | JAX supplies ARM CPU wheels; SAFT itself has not been checked by this project's macOS CI. | **Native build tested** on macOS 15 ARM64/Python 3.12; AUTO selects NEON. |
+| macOS Apple Silicon | JAX supplies ARM CPU wheels; SAFT/NRTL have not been checked by this project's macOS CI. | **Native build tested** on macOS 15 ARM64/Python 3.12; AUTO selects NEON. |
 | macOS Intel | Current JAX CPU wheel support does not include Intel macOS; install the COSMO-RS/core extras separately. | **Native build tested** on macOS 15 Intel/Python 3.12; AUTO selects AVX. |
 | Linux ARM or other architectures | Consult JAX availability; not validated by this project. | The updated backend includes NEON/scalar paths; Linux ARM has not been checked by this project's CI. |
 
@@ -95,12 +95,12 @@ jupyter lab tutorials/
 Select **Python (ThermoWeave)** as the notebook kernel and start with notebook
 00. Register the kernel once; start JupyterLab again whenever you need it.
 The [tutorial index](tutorials.md) identifies which examples need external data.
-SAFT notebooks 00–08, 10 and 11 need no external COSMO files.
+SAFT notebooks 00–08, 10 and 11 and NRTL notebook 13 need no external COSMO files.
 
 ## 6. Add optional models
 
-The standard installation is sufficient for SAFT and its binary/ternary SLLE
-examples. Additional models have their own setup guides:
+The standard installation includes [NRTL](models/nrtl.md), its fitting helpers,
+and SAFT with its binary/ternary SLLE examples. Additional models have their own setup guides:
 
 - [openCOSMO-RS](models/opencosmors.md): build/import the compatible backend,
   configure the conformer database location and choose a parametrization.
@@ -126,7 +126,7 @@ library code from the source checkout. Keep that checkout in place. To copy
 the library into the environment instead, run this from the repository root:
 
 ```text
-python -m pip install ".[saft-smiles,tutorials,dev]"
+python -m pip install ".[nrtl,saft-smiles,tutorials,dev]"
 ```
 
 A regular install stays available if the source folder is moved or removed.
@@ -140,7 +140,7 @@ To update the library and requirements, run from the existing checkout:
 ```text
 conda activate thermoweave
 git pull
-python -m pip install -e ".[saft-smiles,tutorials,dev]"
+python -m pip install -e ".[nrtl,saft-smiles,tutorials,dev]"
 python -m pip check
 ```
 
@@ -153,12 +153,13 @@ For a manual environment setup, from the repository root:
 ```text
 conda create -n thermoweave python=3.12 pip
 conda activate thermoweave
-python -m pip install -e ".[saft-smiles,tutorials,dev]"
+python -m pip install -e ".[nrtl,saft-smiles,tutorials,dev]"
 ```
 
 | Extra | Adds |
 |---|---|
 | none | NumPy, SciPy and mpmath interval arithmetic |
+| `nrtl` | JAX for NRTL evaluation, derivatives and fitting |
 | `saft` | JAX and export serialization |
 | `saft-smiles` | SAFT plus RDKit for group assignment |
 | `tutorials` | JupyterLab, notebook runner and Matplotlib |

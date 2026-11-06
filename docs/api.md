@@ -14,7 +14,7 @@
 ## Models
 
 ```python
-from thermoweave import ThermodynamicModel, SAFTgammaMie, CosmoRSModel, HannaModel
+from thermoweave import ThermodynamicModel, SAFTgammaMie, NRTL, CosmoRSModel, HannaModel
 from thermoweave.saft import GroupDatabase, assign_groups, missing_interactions
 ```
 
@@ -45,6 +45,23 @@ method is required. Temperature derivatives and caloric residual/excess
 quantities can be built with the differentiable `thermoweave.saft.kernels`;
 notebook 04 gives the exact formulas. Absolute enthalpy/heat capacity also
 needs an ideal-gas reference model, which is not supplied automatically.
+
+## NRTL activity model
+
+`NRTL(components, a=..., b=..., alpha=0.3)` uses directed
+`tau[i,j]=a[i,j]+b[i,j]/T`, with b in K. `NRTL.from_database(names)` loads
+available directed pairs from a pinned Clapeyron snapshot. It supplies the
+shared activity/batch/energy API and exact composition/temperature derivatives,
+`excess_enthalpy` (J/mol), `excess_heat_capacity` (J/(mol K)) and JSON save/load.
+The batch API accepts a scalar temperature or one value per row.
+See [the model guide](models/nrtl.md) for complete conventions.
+
+```python
+from thermoweave.nrtl import NRTLFitProblem, NRTLFitResult, fit_nrtl
+```
+
+The [fitting guide](advanced/nrtl-fitting.md) documents mixed property data,
+selected parameters, bounds, weights and identifiability diagnostics.
 
 ## Equilibrium and evaluation
 

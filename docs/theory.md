@@ -23,8 +23,9 @@ $$\ln\gamma_i=\left[\frac{\partial\{n g^E(T,P,\mathbf{n}/n)/(RT)\}}
 
 The optional [custom-model theory notebook](notebooks/theory/custom_activity_models.ipynb) illustrates this with a symmetric two-suffix Margules model,
 $g^E/(RT)=A x_1x_2$, giving $\ln\gamma_1=A x_2^2$ and
-$\ln\gamma_2=A x_1^2$. Its parameters are synthetic. NRTL and UNIQUAC are
-other established gE model families; they are not bundled model classes here.
+$\ln\gamma_2=A x_1^2$. Its parameters are synthetic. [NRTL](models/nrtl.md) is a bundled native JAX
+gE model with empirical directed pair parameters and fitting helpers. UNIQUAC
+is another established family, without a bundled model class here.
 
 COSMO-RS and HANNA also provide liquid activities through adapters. COSMO-RS
 uses quantum-chemical surface information and statistical thermodynamics;

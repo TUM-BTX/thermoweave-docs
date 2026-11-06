@@ -2,7 +2,7 @@
 
 **Thermodynamic models and phase-equilibrium calculations in Python.**
 
-ThermoWeave provides a native SAFT-γ Mie equation of state, adapters for
+ThermoWeave provides a native SAFT-γ Mie equation of state, a JAX NRTL activity model, adapters for
 openCOSMO-RS and HANNA, and a common interface for activities, stability,
 solubility and multiphase equilibrium calculations.
 
@@ -27,7 +27,7 @@ solubility and multiphase equilibrium calculations.
     Learn which properties each model supplies, how molecules are defined and
     which parameters and external data are required.
 
-    [SAFT-γ Mie](models/saft-gamma-mie.md) · [openCOSMO-RS](models/opencosmors.md)
+    [NRTL](models/nrtl.md) · [SAFT-γ Mie](models/saft-gamma-mie.md) · [openCOSMO-RS](models/opencosmors.md)
 
 - **Look up an API or equation**
 
