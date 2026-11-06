@@ -53,6 +53,7 @@ ThermoWeave follows the directed convention used by
 [Clapeyron's NRTL implementation](https://github.com/ClapeyronThermo/Clapeyron.jl/blob/cb620c1af72b7bcea8407e4f970dbae64a7f8c9d/src/models/Activity/NRTL/NRTL.jl):
 
 $$\tau_{ij}=a_{ij}+b_{ij}/T+l_{ij}\ln(T/\mathrm{K})+d_{ij}T,$$
+
 $$\alpha_{ij}(T)=\alpha^0_{ij}+e_{ij}T,\qquad
 G_{ij}=\exp[-\alpha_{ij}(T)\tau_{ij}].$$
 
@@ -61,11 +62,9 @@ The original a+b/T convention is recovered by the default zero values of
 parameter sets. These extensions also support the full
 [SPT-NRTL prediction collection](spt-nrtl.md).
 
-$$D_i=\sum_j x_jG_{ji},\qquad
-q_i=\frac{\sum_j x_j\tau_{ji}G_{ji}}{D_i},\qquad
-\frac{g^E}{RT}=\sum_i x_iq_i,$$
-
-$$\ln\gamma_i=q_i+\sum_j\frac{x_jG_{ij}}{D_j}(\tau_{ij}-q_j).$$
+The [NRTL theory chapter](../theory/nrtl.md) derives the excess-Gibbs and
+activity-coefficient expressions. This page focuses on setup, coefficient
+conventions and API usage.
 
 Component order is the order in `components`. `a[i,j]` and `b[i,j]` are directed;
 the opposite direction is a separate parameter. **Do not transpose matrices

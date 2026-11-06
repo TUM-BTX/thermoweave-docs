@@ -1,13 +1,15 @@
 # Documentation
 
-1. [Installation and optional backends](installation.md)
-2. [Tutorial course](tutorials.md)
-3. [Thermodynamic theory and conventions](theory.md)
-4. [API by task](api.md)
-5. [Capabilities and limitations](capabilities.md)
-6. [Scientific references](references.md)
-7. [Advanced COSMO-RS corpus evaluation](advanced/production-evaluation.md)
-8. [Advanced COSMO-RS parametrization](advanced/parametrization.md)
+The website separates three complementary reading paths:
 
-The documentation website is built from this folder with MkDocs. See
-[maintaining the documentation](contributing-docs.md) for local builds and publication.
+- [Theory](theory.md): thermodynamic foundations, equations of state, SAFT,
+  excess-Gibbs models, NRTL, COSMO-RS, phase equilibria and derivatives.
+- [Practical guide](guide/index.md): installation, model setup, calculation
+  recipes, parameter fitting and evaluation.
+- [Tutorials](tutorials.md): executed notebooks using the actual models.
+
+[API and units](api.md), [capabilities](capabilities.md) and
+[scientific references](references.md) form the reference section.
+
+Build and publish with the workflow in
+[documentation maintenance](contributing-docs.md).

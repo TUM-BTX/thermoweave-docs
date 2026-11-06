@@ -46,3 +46,22 @@ The site's hosting visibility is separate from the library repository's
 visibility. GitHub Free organizations can serve Pages from a public docs
 repository; a private source repository requires an eligible paid plan. See
 [GitHub Pages availability](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages).
+
+## Style and information architecture
+
+The source theme is configured in `mkdocs.yml`; additional typography, colors,
+responsive rules and notebook styling live in `docs/assets/stylesheets/thermoweave.css`.
+IBM Plex fonts are self-hosted in `docs/assets/fonts/`, with their OFL license
+and source hashes. The documentation build needs no external font service.
+Both light and dark palettes must keep readable text, links, code and figures.
+
+Theory is organized under `docs/theory.md` and `docs/theory/`. It explains the
+models, assumptions and equations, with references and links to practical use.
+The Practical guide starts at `docs/guide/index.md`, with installation, model
+setup and calculation recipes. Runnable notebooks have their own Tutorials tab.
+Keep the existing model/setup page URLs when reorganizing the navigation.
+
+The common-tangent figure is an explicitly labelled analytic Margules example.
+Regenerate it in an environment with the tutorial dependencies using
+`python tools/render_theory_figures.py`. The site build only copies the saved
+SVG and notebook outputs; it does not execute scientific calculations.

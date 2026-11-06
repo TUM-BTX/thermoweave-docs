@@ -21,4 +21,4 @@ ThermoWeave SAFT examples.
 
 HANNA supplies liquid excess-Gibbs/activity predictions through the shared
 interface. It does not supply a pressure–volume equation of state. The
-[theory guide](../theory.md) explains the distinction.
+[theory chapter](../theory/cosmors-and-learned-models.md#learned-excess-gibbs-functions) explains the distinction.

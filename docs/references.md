@@ -13,8 +13,10 @@ ThermoWeave has no assigned software DOI; do not substitute a fictitious one.
 | NRTL formulation | Renon and Prausnitz (1968), AIChE Journal 14, 135–144. [DOI](https://doi.org/10.1002/aic.690140124) |
 | NRTL convention and bundled data | Pinned [Clapeyron implementation](https://github.com/ClapeyronThermo/Clapeyron.jl/blob/cb620c1af72b7bcea8407e4f970dbae64a7f8c9d/src/models/Activity/NRTL/NRTL.jl) and [NRTL parameter CSV](https://github.com/ClapeyronThermo/Clapeyron.jl/blob/cb620c1af72b7bcea8407e4f970dbae64a7f8c9d/database/Activity/NRTL/NRTL_unlike.csv), the upstream source column is empty |
 | SPT-NRTL predictions | Winter et al. (2023), Fluid Phase Equilibria 568, 113731. [DOI](https://doi.org/10.1016/j.fluid.2023.113731); [pinned v3 mirror](https://github.com/ClapeyronThermo/spt-nrtl-db/tree/f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e) |
+| Wertheim association theory | Wertheim (1984), Journal of Statistical Physics 35, 19–34. [DOI](https://doi.org/10.1007/BF01017362) |
 | COSMO-RS background | A. Klamt (1995), J. Phys. Chem. 99, 2224–2235. [DOI](https://doi.org/10.1021/j100007a062) |
-| HANNA background | Hoffmann et al. (2024), Chemical Science. [DOI](https://doi.org/10.1039/D4SC05115G); [upstream implementation](https://github.com/marco-hoffmann/HANNA) |
+| COSMO-RS refinement | Klamt, Jonas, Bürger and Lohrenz (1998), J. Phys. Chem. A 102, 5074–5085. [DOI](https://doi.org/10.1021/jp980017s) |
+| HANNA background | Specht et al. (2024), Chemical Science 15, 19777–19786. [DOI](https://doi.org/10.1039/D4SC05115G); [upstream implementation](https://github.com/marco-hoffmann/HANNA) |
 | SAFT numerical comparison and source tables | [SGTPy source and references](https://github.com/gustavochm/sgtpy) |
 | SMILES/SMARTS matching | [RDKit documentation](https://www.rdkit.org/docs/GettingStartedInPython.html) |
 | Automatic differentiation | [JAX documentation](https://docs.jax.dev/en/latest/automatic-differentiation.html) |

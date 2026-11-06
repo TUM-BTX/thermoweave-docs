@@ -1,0 +1,30 @@
+{
+  "license": "OFL-1.1",
+  "copyright": "Copyright \u00a9 2017 IBM Corp. with Reserved Font Name Plex",
+  "files": [
+    {
+      "file": "plex-sans-variable.ttf",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsans/IBMPlexSans%5Bwdth%2Cwght%5D.ttf",
+      "git_blob_sha1": "30f837e8b02e8ecddce6cbebc425b1f422392515",
+      "sha256": "3b031aa4216174205bd8471f88a49b91f093169e9e87bd5262242bc5967fe2e3"
+    },
+    {
+      "file": "plex-sans-italic-variable.ttf",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsans/IBMPlexSans-Italic%5Bwdth%2Cwght%5D.ttf",
+      "git_blob_sha1": "35722e5e79e3616407f479ece5c60c39c1efd68f",
+      "sha256": "0b94c5e981993764db32bf9c610ecc60cbd34ad77ec2f10ba03c64ab75124d8e"
+    },
+    {
+      "file": "plex-mono-regular.ttf",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+      "git_blob_sha1": "0c9770d5183ba60dc4350d3e011b782a320761ae",
+      "sha256": "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46"
+    },
+    {
+      "file": "OFL.txt",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsans/OFL.txt",
+      "git_blob_sha1": "c35c4c618fab33da8695177b3a6cefe0810b7b28",
+      "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da"
+    }
+  ]
+}

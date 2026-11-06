@@ -5,6 +5,9 @@ It supplies pressure, density roots, fugacity coefficients, liquid activities
 and derivatives. The bundled base parameter table comes from Haslam et al.
 (2020); see the [scientific references](../references.md).
 
+For the molecular potential, energy contributions and association equations,
+read [SAFT-γ Mie theory](../theory/saft-gamma-mie.md).
+
 ## Standard model and research extensions
 
 The default Helmholtz contributions are **monomer, chain and association**.

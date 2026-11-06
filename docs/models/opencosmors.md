@@ -6,6 +6,9 @@ compatible parametrization. The backend and its default tests require no Julia
 installation. Installing the ThermoWeave Conda environment does
 not download the engine or the molecular database.
 
+For the surface-interaction theory and chemical-potential interpretation, see
+[COSMO-RS theory](../theory/cosmors-and-learned-models.md).
+
 ## Obtain a compatible backend
 
 The tutorials use the high-level `Model` and `load_parametrization` API of

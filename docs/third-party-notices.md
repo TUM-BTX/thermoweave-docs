@@ -98,3 +98,15 @@ citations nor validated temperature intervals are present in the CSVs.
 The mirror has no separate data-license file in the pinned revision.
 ThermoWeave's MIT code license does not relicense external downloaded tables;
 consult the dataset provider's terms for redistribution of those tables.
+
+## Documentation typography
+
+The documentation self-hosts unmodified IBM Plex Sans (normal/italic variable)
+and IBM Plex Mono (regular) font files from the
+[Google Fonts repository](https://github.com/google/fonts).
+Copyright © 2017 IBM Corp., with Reserved Font Name "Plex".
+The fonts are distributed under the SIL Open Font License 1.1; its full text is
+included at [docs/assets/fonts/OFL.txt](assets/fonts/OFL.txt).
+Source URLs and verified Git blob/SHA-256 hashes are recorded in
+`docs/assets/fonts/provenance.json`. The fonts retain their own OFL license;
+the library's MIT license does not replace it.

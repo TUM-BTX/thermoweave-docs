@@ -53,6 +53,7 @@ neural-network weights or COSMO files are needed to use these tabulated predicti
 The imported coefficients retain the full equations from the paper:
 
 $$\tau_{ij}=a_{ij}+b_{ij}/T+l_{ij}\ln(T/\mathrm{K})+d_{ij}T,$$
+
 $$\alpha_{ij}(T)=\alpha_{ij}^{0}+e_{ij}T.$$
 
 | CSV column | ThermoWeave coefficient | Units |
