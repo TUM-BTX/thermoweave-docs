@@ -2,7 +2,8 @@
 
 ThermoWeave wraps a **separately installed C++ backend**. Three inputs are
 needed: the compiled Python module, molecular COSMO conformer files, and a
-compatible parametrization. Installing the ThermoWeave Conda environment does
+compatible parametrization. The backend and its default tests require no Julia
+installation. Installing the ThermoWeave Conda environment does
 not download the engine or the molecular database.
 
 ## Obtain a compatible backend
@@ -101,7 +102,7 @@ change the parameter name. Use explicit `.orcacosmo` component definitions for
 an ORCA workflow.
 
 The setting selects a source; it does not copy or convert your JSON file.
-Engine-supported Julia-schema JSON files can be loaded by name or file path.
+Compatible JSON parameter files can be loaded by name or file path.
 Use `load_parametrization(source)` in Python to inspect the adapted values.
 
 ## Configure the tutorials

@@ -47,7 +47,7 @@ optimized.to_json("optimized-parametrization.json")
 The optimized parametrization file can be loaded again with the same
 `load_parametrization("optimized-parametrization.json")` function. This
 ThermoWeave v1 format stores the already-adapted C++ options/parameters exactly;
-Julia-schema inputs continue to be delegated to the validated C++ loader.
+Backend JSON inputs continue to be delegated to the validated C++ loader.
 
 Available serial methods are bounded `Nelder-Mead`, `L-BFGS-B`, and seeded
 `differential_evolution`. The objective is the sum of weighted, scaled
