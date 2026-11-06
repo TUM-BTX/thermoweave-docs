@@ -52,7 +52,14 @@ standard states. The first evaluation compiles JAX kernels.
 ThermoWeave follows the directed convention used by
 [Clapeyron's NRTL implementation](https://github.com/ClapeyronThermo/Clapeyron.jl/blob/cb620c1af72b7bcea8407e4f970dbae64a7f8c9d/src/models/Activity/NRTL/NRTL.jl):
 
-$$\tau_{ij}=a_{ij}+b_{ij}/T,\qquad G_{ij}=\exp(-\alpha_{ij}\tau_{ij}),$$
+$$\tau_{ij}=a_{ij}+b_{ij}/T+l_{ij}\ln(T/\mathrm{K})+d_{ij}T,$$
+$$\alpha_{ij}(T)=\alpha^0_{ij}+e_{ij}T,\qquad
+G_{ij}=\exp[-\alpha_{ij}(T)\tau_{ij}].$$
+
+The original a+b/T convention is recovered by the default zero values of
+`tau_log` (l), `tau_linear` (d) and `alpha_linear` (e). This preserves existing
+parameter sets. These extensions also support the full
+[SPT-NRTL prediction collection](spt-nrtl.md).
 
 $$D_i=\sum_j x_jG_{ji},\qquad
 q_i=\frac{\sum_j x_j\tau_{ji}G_{ji}}{D_i},\qquad
@@ -62,10 +69,11 @@ $$\ln\gamma_i=q_i+\sum_j\frac{x_jG_{ij}}{D_j}(\tau_{ij}-q_j).$$
 
 Component order is the order in `components`. `a[i,j]` and `b[i,j]` are directed;
 the opposite direction is a separate parameter. **Do not transpose matrices
-when importing Clapeyron a/b data.** `a` and `alpha` are dimensionless; **b is in
-kelvin**, T is in K. Energy-valued parameters from other software must first be
+when importing Clapeyron a/b data.** `a`, `tau_log` and the `alpha` intercept are dimensionless; **b is in
+kelvin**, T is in K. `tau_linear` and `alpha_linear` have units 1/K. Energy-valued parameters from other software must first be
 converted to this exact convention. A common choice is symmetric, fixed
-`alpha=0.3`; explicit matrices also permit directed alpha.
+`alpha=0.3`; explicit matrices also permit directed alpha. Evaluation checks
+that the effective alpha(T) remains nonnegative.
 
 ```python
 model = NRTL(
@@ -76,14 +84,17 @@ model = NRTL(
 )
 ```
 
-The a/b diagonals must be zero. A scalar fills off-diagonal entries with zero
+All tau-coefficient diagonals must be zero. A scalar fills off-diagonal entries with zero
 diagonals. `c` aliases `alpha`; specify one of them. `tau` aliases a constant a
-matrix with b=0 and cannot be combined with a/b. Parameters are copied and
-read-only: use `model.with_parameters(a=..., b=..., alpha=...)` for a new model.
+matrix with the other tau terms zero and cannot be combined with explicit tau coefficients. Parameters are copied and
+read-only: use `model.with_parameters(a=..., b=..., tau_log=..., tau_linear=..., alpha=..., alpha_linear=...)` for a new model.
 
 The bundled CSV is a snapshot of the
 [Clapeyron NRTL collection](https://github.com/ClapeyronThermo/Clapeyron.jl/blob/cb620c1af72b7bcea8407e4f970dbae64a7f8c9d/database/Activity/NRTL/NRTL_unlike.csv).
-It retains the table's sources and aliases and is available offline. Every
+It retains the table's aliases and is available offline. The upstream `source`
+column is empty for all 32 binary pairs; original per-pair citations and
+temperature validity limits are unknown. `model.reference` identifies the
+source table, and `model.metadata` records these gaps explicitly. Every
 directed pair must exist; missing pairs raise an error. Some source pairs list
 different nonrandomness coefficients in opposite directions. Loading these
 requires an explicit `alpha=` choice after checking the source; the loader
@@ -127,6 +138,15 @@ fractions. Use the pure kernels rather than the NumPy wrapper inside `jit`,
 `grad` or `vmap`. Fit residuals and their exact parameter Jacobians are JIT
 compiled and batched; SciPy only manages the outer bounded least-squares steps.
 
+## Choosing temperature complexity
+
+The extra terms preserve imported SPT predictions exactly and can improve
+fits when data span a sufficiently broad temperature interval. More free terms
+do not automatically improve physical accuracy or extrapolation. For your own
+regressions, start with a+b/T and fixed alpha, add terms only when independent
+validation and caloric data support them, and inspect parameter correlations.
+The [fitting guide](../advanced/nrtl-fitting.md) explains identifiability checks.
+
 ## Fit and save parameters
 
 Use `fit_nrtl` for ln-gamma arrays or `NRTLFitProblem` for selected coefficients
@@ -140,8 +160,9 @@ model.to_json("water-ethanol-nrtl.json")
 reloaded = NRTL.from_json("water-ethanol-nrtl.json")
 ```
 
-The self-contained JSON stores the ordered names, matrices, convention schema
-and reference. Keep the data source and fit validation with your results.
+The self-contained v2 JSON stores the ordered names, all six coefficient
+matrices, convention schema, reference and metadata. Existing v1 JSON files
+remain loadable with zero-valued extensions. Keep the data source and fit validation with your results.
 
 The formulation is due to [Renon and Prausnitz (1968)](https://doi.org/10.1002/aic.690140124).
 Clapeyron's MIT notice is preserved in [third-party notices](../third-party-notices.md).

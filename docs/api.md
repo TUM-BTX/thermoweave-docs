@@ -49,15 +49,20 @@ needs an ideal-gas reference model, which is not supplied automatically.
 ## NRTL activity model
 
 `NRTL(components, a=..., b=..., alpha=0.3)` uses directed
-`tau[i,j]=a[i,j]+b[i,j]/T`, with b in K. `NRTL.from_database(names)` loads
+`tau=a+b/T+tau_log*ln(T/K)+tau_linear*T` and `alpha(T)=alpha+alpha_linear*T`.
+Extension coefficients default to zero; b is in K and both linear slopes are in 1/K. `NRTL.from_database(names)` loads
 available directed pairs from a pinned Clapeyron snapshot. It supplies the
 shared activity/batch/energy API and exact composition/temperature derivatives,
 `excess_enthalpy` (J/mol), `excess_heat_capacity` (J/(mol K)) and JSON save/load.
 The batch API accepts a scalar temperature or one value per row.
+`NRTL.from_spt({"water": "O", "ethanol": "CCO"})` loads full
+[SPT-NRTL predictions](models/spt-nrtl.md) with verified caching and metadata.
+`interaction_parameters(T)` returns effective tau and alpha matrices. JSON v2
+stores every coefficient; legacy v1 files remain readable.
 See [the model guide](models/nrtl.md) for complete conventions.
 
 ```python
-from thermoweave.nrtl import NRTLFitProblem, NRTLFitResult, fit_nrtl
+from thermoweave.nrtl import NRTLFitProblem, NRTLFitResult, fit_nrtl, SPTNRTLDatabase
 ```
 
 The [fitting guide](advanced/nrtl-fitting.md) documents mixed property data,

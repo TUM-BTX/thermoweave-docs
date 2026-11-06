@@ -46,7 +46,8 @@ SOFTWARE.
 Bundled NRTL data:
 [database/Activity/NRTL/NRTL_unlike.csv](https://github.com/ClapeyronThermo/Clapeyron.jl/blob/cb620c1af72b7bcea8407e4f970dbae64a7f8c9d/database/Activity/NRTL/NRTL_unlike.csv),
 commit `cb620c1af72b7bcea8407e4f970dbae64a7f8c9d`, retrieved 2026-11-06.
-The CSV retains its scientific source columns. ThermoWeave's native JAX NRTL
+The CSV retains its source column, which is empty for every pair. Original
+per-pair experimental references and validity ranges are unknown. ThermoWeave's native JAX NRTL
 implementation follows the same directed a+b/T convention; Julia is not a
 runtime dependency. See [NRTL](docs/models/nrtl.md).
 
@@ -75,3 +76,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+
+## SPT-NRTL collection access
+
+ThermoWeave bundles an index of 9,823 CSV tables from
+[ClapeyronThermo/spt-nrtl-db](https://github.com/ClapeyronThermo/spt-nrtl-db),
+revision `f8e903ad96ac1a6d9c3dbaaa53c1752e8106286e`, retrieved 2026-11-06.
+It contains component SMILES, table paths, sizes and Git blob hashes; no SPT
+coefficient tables are bundled. The loader fetches verified external tables
+into a user cache or reads a user-provided local copy.
+
+The scientific reference for these predictions is Winter, Winter, Esper,
+Schilling and Bardow (2023), *SPT-NRTL: A physics-guided machine learning model
+to predict thermodynamically consistent activity coefficients*, Fluid Phase
+Equilibria 568, 113731, https://doi.org/10.1016/j.fluid.2023.113731.
+The mirror's CITATION.bib refers to the earlier SPT paper; the SPT-NRTL paper
+above is the method citation used by ThermoWeave. Neither per-pair experimental
+citations nor validated temperature intervals are present in the CSVs.
+
+The mirror has no separate data-license file in the pinned revision.
+ThermoWeave's MIT code license does not relicense external downloaded tables;
+consult the dataset provider's terms for redistribution of those tables.

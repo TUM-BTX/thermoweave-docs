@@ -95,7 +95,9 @@ jupyter lab tutorials/
 Select **Python (ThermoWeave)** as the notebook kernel and start with notebook
 00. Register the kernel once; start JupyterLab again whenever you need it.
 The [tutorial index](tutorials.md) identifies which examples need external data.
-SAFT notebooks 00–08, 10 and 11 and NRTL notebook 13 need no external COSMO files.
+SAFT notebooks 00–08, 10 and 11 and NRTL notebooks 13–14 need no external COSMO files.
+Notebook 14 downloads SPT tables on first use or uses the configured offline cache;
+see [SPT-NRTL setup](models/spt-nrtl.md).
 
 ## 6. Add optional models
 
@@ -126,7 +128,7 @@ library code from the source checkout. Keep that checkout in place. To copy
 the library into the environment instead, run this from the repository root:
 
 ```text
-python -m pip install ".[nrtl,saft-smiles,tutorials,dev]"
+python -m pip install ".[nrtl-spt,saft-smiles,tutorials,dev]"
 ```
 
 A regular install stays available if the source folder is moved or removed.
@@ -140,7 +142,7 @@ To update the library and requirements, run from the existing checkout:
 ```text
 conda activate thermoweave
 git pull
-python -m pip install -e ".[nrtl,saft-smiles,tutorials,dev]"
+python -m pip install -e ".[nrtl-spt,saft-smiles,tutorials,dev]"
 python -m pip check
 ```
 
@@ -153,13 +155,14 @@ For a manual environment setup, from the repository root:
 ```text
 conda create -n thermoweave python=3.12 pip
 conda activate thermoweave
-python -m pip install -e ".[nrtl,saft-smiles,tutorials,dev]"
+python -m pip install -e ".[nrtl-spt,saft-smiles,tutorials,dev]"
 ```
 
 | Extra | Adds |
 |---|---|
 | none | NumPy, SciPy and mpmath interval arithmetic |
 | `nrtl` | JAX for NRTL evaluation, derivatives and fitting |
+| `nrtl-spt` | NRTL plus RDKit for canonical SMILES lookup in the SPT collection |
 | `saft` | JAX and export serialization |
 | `saft-smiles` | SAFT plus RDKit for group assignment |
 | `tutorials` | JupyterLab, notebook runner and Matplotlib |

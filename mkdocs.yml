@@ -73,6 +73,7 @@ nav:
       - Verify and troubleshoot: installation/troubleshooting.md
   - Models:
       - NRTL: models/nrtl.md
+      - SPT-NRTL parameters: models/spt-nrtl.md
       - SAFT-γ Mie: models/saft-gamma-mie.md
       - openCOSMO-RS: models/opencosmors.md
       - HANNA: models/hanna.md
@@ -96,6 +97,7 @@ nav:
       - 11 · Ternary SLLE with SAFT: notebooks/11_ternary_slle_saft.ipynb
       - 12 · Binary and ternary SLLE with COSMO-RS: notebooks/12_binary_ternary_slle_cosmors.ipynb
       - 13 · NRTL and parameter fitting: notebooks/13_nrtl_and_parameter_fitting.ipynb
+      - 14 · SPT-NRTL collection: notebooks/14_spt_nrtl_parameters.ipynb
       - Optional analytic theory:
           - Custom activity model: notebooks/theory/custom_activity_models.ipynb
           - Reactive and electrolyte illustration: notebooks/theory/synthetic_reactive_electrolytes.ipynb

@@ -3,6 +3,9 @@
 The NRTL helpers fit bounded interaction coefficients with vectorized JAX
 residuals and exact AD parameter Jacobians. They return the fitted model,
 residuals, Jacobian, rank/condition diagnostics, local covariance and a report.
+Fitted models preserve fixed extension coefficients and record the initial
+model provenance and dataset labels. `problem.fit(reference="...")` records
+your own fit citation or data description.
 There is no finite-difference parameter Jacobian in the optimizer.
 
 ## Start with ln-gamma data
@@ -23,9 +26,11 @@ fitted = result.model
 result.save("fitted-nrtl.json")
 ```
 
-This fits both directed off-diagonal a entries. Alpha stays fixed by default.
-`fit_parameters=("a", "b")` fits both temperature terms; `fit_alpha=True`
-adds one shared alpha value per unordered pair. For individual entries,
+This fits both directed off-diagonal a entries. All other coefficients stay fixed by default.
+`fit_parameters=("a", "b")` fits both temperature terms; `fit_parameters=("a", "b", "tau_log", "tau_linear")` selects all four tau
+terms; `fit_alpha=True` and `fit_alpha_linear=True` add shared alpha intercepts
+and slopes per unordered pair. Keep extra coefficients fixed unless your data
+can identify them. For individual entries,
 custom bounds or multiple data types, build a problem explicitly.
 
 ## Select parameters and combine datasets
@@ -44,11 +49,12 @@ problem.add_excess_enthalpy(T_H, X_H, H_E_J_mol, weight=10., label="calorimetry"
 result = problem.fit(starts=4, seed=0, max_nfev=1000)
 ```
 
-Names or zero-based indices select entries. a/b remain directed. To fit one
+Names or zero-based indices select entries. All tau coefficients remain directed. To fit one
 nonrandomness value in both directions, use
 `problem.vary("alpha", 0, 1, bounds=(0.1, 0.6), symmetric=True)`.
 If the initial two directions differ, also supply `start=` explicitly.
-Defaults are a∈[−20,20], b∈[−20000,20000] K, alpha∈[0,1]; choose bounds
+Defaults are a∈[−20,20], b∈[−20000,20000] K, tau_log∈[−20,20],
+tau_linear∈[−0.1,0.1] 1/K, alpha∈[0,1] and alpha_linear∈[−0.001,0.001] 1/K; choose bounds
 appropriate to your chemistry and temperature range. `start=` overrides the
 model's initial entry. Multistart uses seeded uniform samples inside finite
 bounds; it is an optimization aid, not a global-optimum guarantee.
@@ -78,9 +84,14 @@ Weights are not automatically estimated from the data.
 
 ## Identifiability and validation
 
-At a single T, activity-only data constrain a+b/T, not a and b separately.
-The helper rejects freeing both for the same directed pair unless there are
-multiple temperatures or excess-enthalpy data. A narrow temperature interval,
+At a single T, activity-only data constrain effective tau(T) and alpha(T),
+not their separate temperature coefficients. The helper checks the rank of
+selected temperature basis functions, adding derivative information where
+excess-enthalpy data are present. It rejects, for example, four free tau terms
+with activity data at only three temperatures, or alpha intercept and slope
+from one-temperature activity data. Passing this necessary basis check does
+not establish full parameter identifiability; inspect the fitted Jacobian too.
+A narrow temperature interval,
 limited composition range or fitting alpha can still create strong parameter
 correlations. Start with fixed alpha, adequate composition coverage and held-out
 temperatures/compositions. A numerical success flag alone is insufficient.
@@ -101,6 +112,8 @@ and Jacobian evaluations at the same parameters share a cached JAX evaluation.
 
 LLE equality residuals alone can also fit metastable or unstable tie lines.
 After fitting, use [stability and phase flash](../capabilities.md) checks, verify
-material balances and validate against independent data. NRTL does not supply
+material balances and validate against independent data. A fitted model with
+negative alpha(T) at its data temperatures is rejected;
+choose bounds that keep alpha(T) physical over the intended range. NRTL does not supply
 solid fusion data; an SLLE fit requires those separately. Fitting a parameter
 set to another model is model reduction, not experimental validation.

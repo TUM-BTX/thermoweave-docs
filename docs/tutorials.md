@@ -31,6 +31,7 @@ are model predictions, not a demonstration of agreement with measured SLLE.
 | [06 · Stability and LLE](notebooks/06_liquid_stability_and_flash.ipynb) | Benzene/water stability and liquid splitting |
 | [07 · SLE](notebooks/07_solubility_and_solid_liquid_flash.ipynb) | Benzene solubility and liquid/solid flash |
 | [08 · Fitting](notebooks/08_parameter_fitting_and_evaluation.ipynb) | Actual SAFT parameter fitting with labelled synthetic recovery targets |
+| [14 · SPT-NRTL collection](notebooks/14_spt_nrtl_parameters.ipynb) | Load actual predictions, cache/offline use, full temperature dependence and ternary activities |
 | [13 · NRTL and fitting](notebooks/13_nrtl_and_parameter_fitting.ipynb) | Water/ethanol NRTL, VLE and fitting to actual SAFT predictions with held-out validation |
 | [09 · External models](notebooks/09_cosmors_and_hanna.ipynb) | Actual COSMO-RS activities and optional HANNA setup |
 
