@@ -16,8 +16,12 @@ may not supply the API used here.
 
 The validated route uses x86_64 Linux and Python 3.12. Windows users should
 follow the [WSL2 route](../installation/windows.md#opencosmo-rs-through-wsl2).
-The backend currently uses x86 SIMD, so native Apple Silicon/ARM builds are
-not supported by this code. See the [platform overview](../installation.md#choose-your-platform).
+**On macOS:** native Apple Silicon (M-series) installation is unsupported
+by this backend; Intel macOS builds are unvalidated. There is currently no
+verified local macOS installation recipe for the backend used here. Mac users
+can run the validated workflow on an x86_64 Linux machine and connect from
+their browser. See the [Mac support summary](../installation/macos.md#can-i-install-opencosmo-rs-locally-on-my-mac)
+and [platform overview](../installation.md#choose-your-platform).
 
 ## Build for your environment
 

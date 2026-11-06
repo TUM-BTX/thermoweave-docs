@@ -1,5 +1,25 @@
 # macOS
 
+## Can I install openCOSMO-RS locally on my Mac?
+
+**The C++ backend used by ThermoWeave currently has no validated local macOS
+installation route.** Its status depends on the Mac's CPU:
+
+| Mac | Native openCOSMO-RS installation |
+|---|---|
+| Apple Silicon (M-series, ARM) | **Unsupported by the current backend.** Its x86 SSE3/AVX instructions need an ARM-compatible implementation before it can build natively. |
+| Intel (x86_64) | **Unvalidated.** The CPU architecture is compatible, so a local build may be possible, but this project has not tested it or provided verified macOS build instructions. |
+
+To use the validated workflow **from a Mac**, run the backend and notebook
+kernel on a compatible **x86_64 Linux machine** and connect to Jupyter from the
+Mac's browser. The computation then runs on Linux. A Linux environment with an
+ARM CPU does not satisfy the backend's x86 requirement.
+
+This concerns `openCOSMO-RS_cpp_26`, the backend required by these tutorials.
+The ThermoWeave Python library and the SAFT model have separate requirements,
+explained below. Installing the Conda environment alone does not install or
+port the COSMO-RS backend.
+
 ## Apple Silicon (M-series)
 
 Install the **arm64** Miniforge installer and use a native ARM terminal. Then

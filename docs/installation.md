@@ -32,8 +32,8 @@ PowerShell or another editor terminal.
 |---|---|---|
 | Linux x86_64 | This is the locally validated and CI-tested platform. | Supported build route; see the [Linux guide](installation/linux.md). |
 | Windows x86_64 | Follow the [Windows guide](installation/windows.md); this project has not run Windows CI. | The documented route uses Linux through WSL2. |
-| macOS Apple Silicon | JAX supplies ARM CPU wheels; this project has not run macOS CI. | The current backend uses x86 SIMD; use a compatible remote x86_64 Linux machine. |
-| macOS Intel | Current JAX CPU wheel support does not include Intel macOS. | Use a compatible Linux machine for the documented workflow. |
+| macOS Apple Silicon | JAX supplies ARM CPU wheels; this project has not run macOS CI. | **No native ARM support.** Run the backend on a compatible x86_64 Linux machine. |
+| macOS Intel | Current JAX CPU wheel support does not include Intel macOS. | **Unvalidated on Intel macOS.** The verified route uses x86_64 Linux. |
 | Linux ARM or other architectures | Consult JAX availability; not validated by this project. | The current backend's x86 SIMD code is a limitation. |
 
 [JAX's installation guide](https://docs.jax.dev/en/latest/installation.html)
