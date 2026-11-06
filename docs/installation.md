@@ -32,15 +32,15 @@ PowerShell or another editor terminal.
 |---|---|---|
 | Linux x86_64 | This is the locally validated and CI-tested platform. | Supported build route; see the [Linux guide](installation/linux.md). |
 | Windows x86_64 | Follow the [Windows guide](installation/windows.md); this project has not run Windows CI. | The documented route uses Linux through WSL2. |
-| macOS Apple Silicon | JAX supplies ARM CPU wheels; this project has not run macOS CI. | **No native ARM support.** Run the backend on a compatible x86_64 Linux machine. |
-| macOS Intel | Current JAX CPU wheel support does not include Intel macOS. | **Unvalidated on Intel macOS.** The verified route uses x86_64 Linux. |
-| Linux ARM or other architectures | Consult JAX availability; not validated by this project. | The current backend's x86 SIMD code is a limitation. |
+| macOS Apple Silicon | JAX supplies ARM CPU wheels; SAFT itself has not been checked by this project's macOS CI. | **Native build tested** on macOS 15 ARM64/Python 3.12; AUTO selects NEON. |
+| macOS Intel | Current JAX CPU wheel support does not include Intel macOS; install the COSMO-RS/core extras separately. | **Native build tested** on macOS 15 Intel/Python 3.12; AUTO selects AVX. |
+| Linux ARM or other architectures | Consult JAX availability; not validated by this project. | The updated backend includes NEON/scalar paths; Linux ARM has not been checked by this project's CI. |
 
 [JAX's installation guide](https://docs.jax.dev/en/latest/installation.html)
 is the reference for current CPU/OS support. See the [macOS guide](installation/macos.md)
 for the distinction between native SAFT and the optional COSMO-RS backend.
-These instructions identify supported routes; they do not promise that every
-external engine runs natively on every architecture.
+The backend checks and the SAFT model checks cover different dependencies.
+The OS-specific pages identify which combinations were actually tested.
 
 ## 2. Clone the library
 

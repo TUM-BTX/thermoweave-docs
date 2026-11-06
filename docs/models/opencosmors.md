@@ -14,19 +14,20 @@ Its [backend documentation](https://github.com/jnotse/openCOSMO-RS-docs) also
 requires access. An arbitrary installation of a different openCOSMO-RS version
 may not supply the API used here.
 
-The validated route uses x86_64 Linux and Python 3.12. Windows users should
-follow the [WSL2 route](../installation/windows.md#opencosmo-rs-through-wsl2).
-**On macOS:** native Apple Silicon (M-series) installation is unsupported
-by this backend; Intel macOS builds are unvalidated. There is currently no
-verified local macOS installation recipe for the backend used here. Mac users
-can run the validated workflow on an x86_64 Linux machine and connect from
-their browser. See the [Mac support summary](../installation/macos.md#can-i-install-opencosmo-rs-locally-on-my-mac)
-and [platform overview](../installation.md#choose-your-platform).
+Native C++ builds and numerical/API regressions pass on Linux x86_64 and
+**macOS 15 Intel and Apple Silicon**, with Python 3.12. The Apple Silicon
+double-precision build is checked too. Follow the [native macOS guide](../installation/macos.md)
+for Apple command-line tools, a suitable Conda environment and the build recipe.
+Windows users can follow the [WSL2 route](../installation/windows.md#opencosmo-rs-through-wsl2).
+Use a checkout containing commit `b32d7b9` or its descendants with the portability
+change; older versions of our fork do not have the ARM implementation.
 
 ## Build for your environment
 
 Install the [Linux build tools](../installation/linux.md#build-tools-for-opencosmo-rs)
-first. In a parent folder of your choice, activate ThermoWeave and clone the
+or [macOS command-line tools](../installation/macos.md#1-install-native-tools) first.
+On macOS, install the CMake/Ninja packages shown in that guide as well.
+In a parent folder of your choice, activate ThermoWeave and clone the
 backend with its submodules:
 
 ```bash
@@ -39,12 +40,13 @@ Configure CMake for the **active Python interpreter**, then build. The Python
 command avoids embedding any user's installation path:
 
 ```bash
-python -c "import subprocess, sys; subprocess.run(['cmake', '-S', '.', '-B', 'build', '-DCMAKE_BUILD_TYPE=Release', '-DOCRS_BUILD_TESTS=OFF', '-DPython_EXECUTABLE=' + sys.executable], check=True)"
+python -c "import subprocess, sys; subprocess.run(['cmake', '-S', '.', '-B', 'build', '-DCMAKE_BUILD_TYPE=Release', '-DOCRS_BUILD_TESTS=OFF', '-DOCRS_SIMD=AUTO', '-DPython_EXECUTABLE=' + sys.executable], check=True)"
 cmake --build build --parallel 2
 ```
 
-The default backend build targets AVX-capable x86 hardware. Its compiler flags
-must match the computer that will run it. The extension is normally created
+The default `OCRS_SIMD=AUTO` build selects AVX on x86 and NEON on ARM64.
+`OCRS_SIMD=SCALAR` selects a portable fallback. Explicit SIMD selections must
+match the computer that will run the module. The extension is normally created
 under `build/`; locate the actual directory containing `openCOSMORS*.so`
 (or `.pyd` for a native Windows build) if your build uses another output layout.
 A build for Python 3.12 cannot be reused as a Python 3.13 extension. Rebuild

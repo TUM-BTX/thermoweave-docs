@@ -27,8 +27,9 @@ CMake and Git, or ask your system administrator. You need a compatible compiler,
 not a specific home-directory layout. See the
 [openCOSMO-RS build and configuration guide](../models/opencosmors.md).
 
-The current backend's default build enables AVX. Build on hardware supporting
-AVX. For an x86 machine limited to SSE3, use the upstream compiler options to
-build an SSE3 target; disabling AVX alone does not automatically add `-msse3`.
-Do not copy an AVX binary onto a computer that cannot execute it. ARM is not a
-native target of this backend version.
+The updated backend's `OCRS_SIMD=AUTO` selects AVX on x86_64 and NEON on
+ARM64. On x86 hardware without AVX, explicitly select `OCRS_SIMD=SSE3` or
+`OCRS_SIMD=SCALAR`. The legacy `OCRS_ENABLE_AVX=OFF` option selects SSE3.
+Do not copy a binary compiled with instructions the target CPU cannot execute.
+Linux ARM builds use the new portability layer but have not been checked by
+this project's CI; the native ARM CI coverage currently uses Apple Silicon.

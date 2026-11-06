@@ -2,67 +2,116 @@
 
 ## Can I install openCOSMO-RS locally on my Mac?
 
-**The C++ backend used by ThermoWeave currently has no validated local macOS
-installation route.** Its status depends on the Mac's CPU:
+**Yes. The updated C++ backend builds and passes numerical/API regression
+checks natively on both Apple Silicon and Intel Macs.**
 
-| Mac | Native openCOSMO-RS installation |
-|---|---|
-| Apple Silicon (M-series, ARM) | **Unsupported by the current backend.** Its x86 SSE3/AVX instructions need an ARM-compatible implementation before it can build natively. |
-| Intel (x86_64) | **Unvalidated.** The CPU architecture is compatible, so a local build may be possible, but this project has not tested it or provided verified macOS build instructions. |
+| Mac | Native backend | ThermoWeave SAFT installation |
+|---|---|---|
+| Apple Silicon (M-series, ARM64) | Tested on macOS 15, Python 3.12; `OCRS_SIMD=AUTO` selects NEON. Float and double builds pass. | Use the standard Conda environment with native ARM Python; SAFT macOS CI is separate from the backend checks. |
+| Intel (x86_64) | Tested on macOS 15, Python 3.12; `AUTO` selects AVX. | Use the COSMO-RS/core environment below if current JAX wheels are unavailable for Intel macOS. |
 
-To use the validated workflow **from a Mac**, run the backend and notebook
-kernel on a compatible **x86_64 Linux machine** and connect to Jupyter from the
-Mac's browser. The computation then runs on Linux. A Linux environment with an
-ARM CPU does not satisfy the backend's x86 requirement.
+Use a backend checkout containing the [native portability change](https://github.com/jnotse/openCOSMO-RS_cpp_26/commit/b32d7b9377a7797bffede8e42792c2468c59e8a0).
+Older versions of our fork lack the ARM path. The port brings in the upstream
+NEON/scalar SIMD abstraction while retaining the established x86 calculation
+paths. See the [passing native checks](https://github.com/jnotse/openCOSMO-RS_cpp_26/actions/runs/42194095644).
+The backend and its test logs require access to that private repository.
 
-This concerns `openCOSMO-RS_cpp_26`, the backend required by these tutorials.
-The ThermoWeave Python library and the SAFT model have separate requirements,
-explained below. Installing the Conda environment alone does not install or
-port the COSMO-RS backend.
+## 1. Install native tools
 
-## Apple Silicon (M-series)
+Install [Miniforge](https://github.com/conda-forge/miniforge#download) for the
+Mac's architecture and [Git](https://git-scm.com/downloads). On an M-series Mac,
+choose ARM64; on an Intel Mac, choose x86_64. Install Apple's C++ command-line
+tools if they are missing:
 
-Install the **arm64** Miniforge installer and use a native ARM terminal. Then
-follow the [common installation guide](../installation.md). JAX lists native
-Apple ARM CPU wheels in its [installation guide](https://docs.jax.dev/en/latest/installation.html#cpu).
-No GPU configuration is needed for the SAFT examples. This project has not run
-macOS CI, so this is an upstream-supported dependency route rather than a
-claim of local macOS validation.
-
-Avoid mixing ARM and Intel Python packages in the same environment. Confirm
-the architecture with:
-
-```text
-python -c "import platform; print(platform.machine())"
+```bash
+xcode-select --install
 ```
 
-## Intel Macs
-
-Current JAX wheel documentation does not list macOS x86_64. The standard SAFT
-environment is therefore not a validated one-command route on an Intel Mac.
-For the documented SAFT workflow, use a supported Linux environment on compatible
-hardware. Installing an older JAX release or building from source requires its
-own compatibility checks; the guide does not silently pin an untested version.
-
-The Python core without SAFT can still be installed separately where its
-NumPy/SciPy dependencies are available:
+Complete the installer dialog before building. Avoid mixing an ARM Python
+with Intel libraries or an Intel Python with ARM libraries. You can inspect
+the active interpreter with:
 
 ```text
-conda create -n thermoweave-core python=3.12 pip
-conda activate thermoweave-core
+python -c "import platform, sys; print(platform.machine()); print(sys.executable)"
+```
+
+## 2. Set up ThermoWeave
+
+### Apple Silicon: SAFT and COSMO-RS
+
+Follow the [common installation guide](../installation.md) to create and
+activate `thermoweave`. It installs SAFT/SMILES and notebook dependencies.
+The C++ COSMO-RS engine is built separately in step 3 below.
+
+### Intel: COSMO-RS without requiring JAX
+
+Current JAX wheel documentation does not list Intel macOS. This does **not**
+prevent installing ThermoWeave's COSMO-RS adapter, which does not require JAX.
+From a ThermoWeave checkout, create an environment for COSMO-RS and notebooks:
+
+```text
+conda create -n thermoweave python=3.12 pip
+conda activate thermoweave
 python -m pip install -e ".[tutorials]"
+python -m ipykernel install --user --name thermoweave --display-name "Python (ThermoWeave)"
 ```
 
-Run the installation command from the repository root. This core installation
-does not provide SAFT EOS evaluations.
+If you already created a suitable environment, activate it instead of creating
+it again. This core/COSMO-RS installation does not include SAFT EOS evaluations.
 
-## openCOSMO-RS
+## 3. Build the C++ backend
 
-The current C++ backend uses x86 SSE3/AVX intrinsics. It cannot be built natively
-for Apple Silicon simply by changing a path or turning off AVX. Use a compatible
-remote x86_64 Linux computer for the validated backend workflow, including the
-COSMO-RS SLLE notebooks. An Intel macOS build is also outside this project's
-validated build route; see the backend's documentation before attempting one.
+Keep the intended Conda environment active. In a parent folder of your choice:
 
-You can still read the [saved notebook calculations](../tutorials.md) in the
-documentation site without installing the backend.
+```bash
+git clone --recurse-submodules https://github.com/jnotse/openCOSMO-RS_cpp_26.git
+cd openCOSMO-RS_cpp_26
+python -m pip install 'cmake>=3.15,<4' ninja numpy
+python -c "import subprocess, sys; subprocess.run(['cmake', '-S', '.', '-B', 'build', '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release', '-DOCRS_BUILD_TESTS=OFF', '-DOCRS_SIMD=AUTO', '-DPython_EXECUTABLE=' + sys.executable], check=True)"
+cmake --build build --parallel 2
+```
+
+For an existing checkout, use `git pull` and update its submodules rather than
+cloning again. Start with a fresh build directory if an old CMake cache points
+to a different Python, architecture or source location.
+
+`AUTO` selects NEON on Apple Silicon and AVX on Intel. `OCRS_SIMD=SCALAR` is an
+explicit portable fallback. Keep the default `AUTO` choice for the documented
+native route. The upstream option name `OPENCOMSORS_SIMD` is also accepted.
+
+OpenMP is optional. Apple's Clang can build a working serial backend without
+OpenMP; a missing OpenMP package alone is not a reason to stop the build.
+
+## 4. Verify and configure the backend
+
+Still inside the backend checkout:
+
+```text
+python -c "import sys; sys.path.insert(0, 'build'); import openCOSMORS; print(openCOSMORS.__file__); print(openCOSMORS.load_parametrization('default_turbomole')['metadata'])"
+python -c "from pathlib import Path; print((Path.cwd() / 'build').resolve())"
+```
+
+Use the absolute build directory printed by the second command as
+`THERMOWEAVE_OPENCOSMORS_BUILD`. Configure that location, your molecular COSMO
+files and your parameter source using the
+[database/parametrization instructions](../models/opencosmors.md#configure-the-tutorials).
+Keep the backend checkout in place for bundled parameter names.
+
+Then return to the **ThermoWeave repository root** and run:
+
+```text
+python tools/check_cosmors_setup.py
+jupyter lab tutorials/
+```
+
+Select **Python (ThermoWeave)** and run notebook 09, followed by notebook 12
+for binary and ternary SLLE. Your real conformer inputs are still required.
+
+## What was validated?
+
+The backend CI compiled and ran real-input Model/legacy API, conformer,
+composition-derivative, solvation and electrolyte-diagnostic checks on native
+macOS 15 Intel and ARM64 runners. Independent SIMD tests check float/double
+products, sums, unaligned inputs and tail bounds. Linux AVX and scalar builds
+passed the same checks. Full ThermoWeave SLLE notebooks were not executed on
+the Mac runners; their saved calculations were validated separately on Linux.
